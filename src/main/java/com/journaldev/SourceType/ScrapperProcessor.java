@@ -5,6 +5,6 @@ import java.io.IOException;
 /**
  * Created by dromov on 27.05.2016.
  */
-public interface SourceProcessor {
+public interface ScrapperProcessor {
     void process() throws IOException;
 }
