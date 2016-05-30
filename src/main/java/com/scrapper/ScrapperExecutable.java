@@ -19,7 +19,7 @@ public class ScrapperExecutable {
 
         ArrayList<ScrapperProcessor> processors = new ArrayList<>();
 
-//        processors.add(new TableTypeProcessor("https://jailtracker.com/JTClientWeb/(S(sh4cuafck0hejs45zl5ch1m0))/JailTracker/GetInmateList?start=0&limit=10&sort=LastName&dir=ASC", personDAO));
+        processors.add(new TableTypeProcessor("https://jailtracker.com/JTClientWeb/(S(sh4cuafck0hejs45zl5ch1m0))/JailTracker/GetInmateList?start=0&limit=10&sort=LastName&dir=ASC", personDAO));
         processors.add(new ImageScrapperProcessor("https://www.parentsformeganslaw.org/", "/Users/dromov/Documents/PHOTO/"));
 
         for (ScrapperProcessor processor : processors) {
