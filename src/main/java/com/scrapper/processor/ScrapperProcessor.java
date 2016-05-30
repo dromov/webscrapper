@@ -1,4 +1,4 @@
-package com.scrapper.SourceType;
+package com.scrapper.processor;
 
 import java.io.IOException;
 

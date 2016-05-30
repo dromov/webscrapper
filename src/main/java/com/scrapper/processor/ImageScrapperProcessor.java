@@ -1,4 +1,4 @@
-package com.scrapper.SourceType;
+package com.scrapper.processor;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
