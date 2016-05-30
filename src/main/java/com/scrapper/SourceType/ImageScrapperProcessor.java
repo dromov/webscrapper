@@ -1,11 +1,9 @@
-package com.journaldev.SourceType;
+package com.scrapper.SourceType;
 
-import com.journaldev.dao.PersonDAO;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.context.support.AbstractXmlApplicationContext;
 
 import java.io.*;
 import java.net.URL;
@@ -33,9 +31,7 @@ public class ImageScrapperProcessor implements ScrapperProcessor {
 
         for (Element imageElement : img) {
             String src = imageElement.absUrl("src");
-            System.out.println("src attribute is : "+src);
             saveImageToDestinationFolder(src);
-
         }
     }
 

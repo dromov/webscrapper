@@ -1,4 +1,4 @@
-package com.journaldev.SourceType;
+package com.scrapper.SourceType;
 
 import java.io.IOException;
 

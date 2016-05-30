@@ -1,4 +1,4 @@
-package com.journaldev.model;
+package com.scrapper.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -7,7 +7,7 @@ import java.sql.Date;
 
 @Entity
 @Table(name="inmates")
-public class Person {
+public class Inmate {
 
     @Id
     @Column(name="id")
@@ -33,7 +33,7 @@ public class Person {
     @DateTimeFormat
     private Date releaseDate;
 
-    public Person(String firstName, String lastName, String middleName, String jacket, String suffix, int arrestNo, Date originalBookDateTime, Date finalReleaseDateTime) {
+    public Inmate(String firstName, String lastName, String middleName, String jacket, String suffix, int arrestNo, Date originalBookDateTime, Date finalReleaseDateTime) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;

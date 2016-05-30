@@ -1,12 +1,17 @@
-package com.journaldev.main;
+package com.scrapper.main;
 
-import com.journaldev.SourceType.ImageScrapperProcessor;
-import com.journaldev.SourceType.ScrapperProcessor;
-import com.journaldev.dao.PersonDAO;
+import com.scrapper.SourceType.ImageScrapperProcessor;
+import com.scrapper.SourceType.ScrapperProcessor;
+import com.scrapper.SourceType.TableTypeProcessor;
+import com.scrapper.configuration.AppConfig;
+import com.scrapper.dao.InmateDAO;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.core.env.Environment;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.BufferedReader;
@@ -16,29 +21,26 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class SpringHibernateMain {
+public class ScrapperMain {
+
+    @Autowired
+    private Environment environment;
 
     public static void main(String[] args) throws Exception {
-//        directFromUrl2();
+        AbstractApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 
-
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
-
-        PersonDAO personDAO = context.getBean(PersonDAO.class);
+        InmateDAO personDAO = (InmateDAO) context.getBean("inmateDao");
 
         ArrayList<ScrapperProcessor> processors = new ArrayList<>();
 
-//        processors.add(new TableTypeProcessor("https://jailtracker.com/JTClientWeb/%28S%28yvvsl12xsv02cfj0k3b0rque%29%29/JailTracker/GetInmateList?start=0&limit=10&sort=LastName&dir=ASC", personDAO));
+        processors.add(new TableTypeProcessor("https://jailtracker.com/JTClientWeb/(S(sh4cuafck0hejs45zl5ch1m0))/JailTracker/GetInmateList?start=0&limit=10&sort=LastName&dir=ASC", personDAO));
         processors.add(new ImageScrapperProcessor("https://www.parentsformeganslaw.org/", "/Users/dromov/Documents/PHOTO/"));
 
         for (ScrapperProcessor processor : processors) {
             processor.process();
         }
 
-
-
         context.close();
-//        directlyFromUrl();
     }
 
 
