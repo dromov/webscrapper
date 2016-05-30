@@ -7,6 +7,10 @@ import org.jsoup.select.Elements;
 
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by dromov on 27.05.2016.
@@ -23,17 +27,47 @@ public class ImageScrapperProcessor implements ScrapperProcessor {
     @Override
     public void process() throws IOException {
         Document document = Jsoup.connect(sourceUrl).get();
+        List<String> allImageUrls = getImageUrlsFromNativeTag(document);
 
-        Elements els = document.select("*[style*=background]");
-        String style = els.first().attributes().get("style");
+        allImageUrls.addAll(getImageUrlsFromBackgroundElement(document));
 
-        Elements img = document.getElementsByTag("img");
-
-        for (Element imageElement : img) {
-            String src = imageElement.absUrl("src");
-            saveImageToDestinationFolder(src);
+        for (String imageAbsUrl : allImageUrls) {
+            saveImageToDestinationFolder(imageAbsUrl);
         }
     }
+
+    private ArrayList<String> getImageUrlsFromBackgroundElement(Document document) {
+        Elements backgroundElements = document.select("*[style*=background]");
+        ArrayList<String> imageAbsUrlList = new ArrayList();
+
+        for (Element backgroundElement : backgroundElements) {
+            String baseUrl = backgroundElement.baseUri();
+            String styleRepresentation = backgroundElement.attributes().get("style");
+
+            Matcher m = Pattern.compile("url\\((.*?)\\)").matcher(styleRepresentation);
+            if (m.find()) {
+                String absUrl = baseUrl + m.group(1);
+                imageAbsUrlList.add(absUrl);
+            }
+
+        }
+
+        return imageAbsUrlList;
+    }
+
+    private ArrayList<String> getImageUrlsFromNativeTag(Document document) {
+        Elements imgTagElement = document.getElementsByTag("img");
+        ArrayList<String> imageAbsUrlList = new ArrayList();
+
+        for (Element imageElement : imgTagElement) {
+            String imageAbsUrl = imageElement.absUrl("src");
+            imageAbsUrlList.add(imageAbsUrl);
+        }
+
+        return imageAbsUrlList;
+
+    }
+
 
     private void saveImageToDestinationFolder(String src) throws IOException {
         int lastSlashIndex = src.lastIndexOf("/");
